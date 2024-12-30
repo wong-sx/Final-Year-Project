@@ -1,0 +1,83 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services' // Required for Google services like Google Maps
+}
+
+android {
+    namespace = "com.example.fyp" // Your app's namespace (package name)
+    compileSdk = flutter.compileSdkVersion // Use Flutter's compileSdkVersion
+
+    // Optional: You can specify the NDK version if required for native code
+    ndkVersion = "25.1.8937393"
+
+    defaultConfig {
+        // Your app's ID, which is the package name.
+        applicationId = "com.example.fyp"
+
+        // Set the minimum SDK version. This is the oldest version of Android your app will support.
+        minSdkVersion = 23 // Set to the minimum SDK your app supports (you may adjust this if necessary).
+
+        // Set the target SDK version. This defines the Android version your app is optimized for.
+        targetSdkVersion = 33 // Set this to the highest Android version your app is compatible with.
+
+        // Versioning of your app
+        versionCode = flutter.versionCode // Automatically gets version code from Flutter settings.
+        versionName = flutter.versionName // Automatically gets version name from Flutter settings.
+
+        // Optional: Add a multiDexEnabled configuration if your app has a lot of methods (over 64K)
+        multiDexEnabled true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8 // Ensure Java 8 compatibility
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8" // Ensure Kotlin compatibility with Java 8
+    }
+
+     aaptOptions {
+            noCompress 'tflite'
+            noCompress 'lite'
+        }
+
+    buildTypes {
+        release {
+            // Optional: Use a signing configuration for release builds.
+            signingConfig = signingConfigs.debug // Change this for production signing
+
+            // Optional: Enable resource shrinking and minification for production builds.
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                          'proguard-rules.pro' // Proguard configuration for release builds
+        }
+    }
+}
+
+flutter {
+    source = "../.." // Ensure Flutter project location is correct
+}
+
+dependencies {
+    // Google Maps SDK dependency
+    implementation "com.google.android.gms:play-services-maps:18.2.0"
+    
+    // Optional: For location services, required for apps using geolocation features.
+    implementation "com.google.android.gms:play-services-location:21.0.1"
+
+    // Firebase SDK: Firebase BoM (Bill of Materials)
+    implementation platform('com.google.firebase:firebase-bom:33.5.1')
+
+    // Add the Firebase Analytics library (you can add other Firebase libraries here)
+    implementation 'com.google.firebase:firebase-analytics'
+
+    // Optional: Add other Firebase products as needed.
+
+    implementation 'com.google.mlkit:face-mesh-detection:16.0.0-beta1'
+}
+
+apply plugin: 'com.google.gms.google-services' // Apply Google services plugin at the bottom of the file.
